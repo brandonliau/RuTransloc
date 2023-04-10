@@ -26,7 +26,7 @@ def getWeatherData(latitude, longitude):
     response = api.weatherAPI(latitude, longitude)
     temperature = response['current_weather']['temperature']
     windspeed = response['current_weather']['windspeed']
-    currentTime = datetime.now().isoformat(timespec='hours')
+    currentTime = datetime.utcnow().isoformat(timespec='hours')
     for i in range(len(response['hourly']['time'])):
         if str(currentTime) in response['hourly']['time'][i]:
             index = i
@@ -41,3 +41,8 @@ def getDistance(route, nextStop, latitude, longitude):
     finalLatitude = abs(latitude - stopLatitude)
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
+
+def getTrafficData(latitude, longitude):
+    response = api.trafficAPI(latitude, longitude)
+    trafficSpeed = response['flowSegmentData']['currentSpeed']
+    return [trafficSpeed]
