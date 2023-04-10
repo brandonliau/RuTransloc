@@ -10,5 +10,7 @@ stopsDict = {4015044: # Route REXL [19]
             4253700: {'lat': 40.485509, 'lng': -74.437198}, # College Hall [6]
             4259016: {'lat': 40.52192, 'lng': -74.463263}, # Hill Center (NB) [28]
             4259048: {'lat': 40.523612, 'lng': -74.465127}, # Allison Road Classrooms [33]
-            4231636: {'lat:': 40.521872, 'lng': -74.463417}}, # Hill Center (SB) [5]
+            4231636: {'lat': 40.521872, 'lng': -74.463417}}, # Hill Center (SB) [5]
             }
+
+routeLst = list(stopsDict.keys())

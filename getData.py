@@ -1,21 +1,25 @@
 import config as con
 import apiCall as api
-import busStops as bs
+import routeInfo as ri
 from datetime import datetime
 
 def getVehicleData(route):
     response = api.vehicleAPI(route)
     data = response['data'][f'{con.agencyID}']
+    vehicleData = []
     for item in data:
         time = item['last_updated_on']
         speed = item['speed']
         vehicleId = item['vehicle_id']
         passengerLoad = item['passenger_load']
-        nextStop = item['arrival_estimates'][0]['stop_id']
         latitude = item['location']['lat']
         longitude = item['location']['lng']
         heading = item['heading']
-        vehicleData = [time, speed, int(vehicleId), passengerLoad, int(nextStop), latitude, longitude, heading]
+        if len(item['arrival_estimates']) == 0:
+            pass
+        else:
+            nextStop = item['arrival_estimates'][0]['stop_id']
+            vehicleData.append([time, int(vehicleId), speed, passengerLoad, int(nextStop), latitude, longitude, heading])
     return vehicleData
 
 def getWeatherData(latitude, longitude):
@@ -32,8 +36,8 @@ def getWeatherData(latitude, longitude):
     return [temperature, windspeed, precipitation, humidity, visibility]
     
 def getDistance(route, nextStop, latitude, longitude):
-    stopLatitude = bs.stopsDict[route][nextStop]['lat']
-    stopLongitude = bs.stopsDict[route][nextStop]['lng']
+    stopLatitude = ri.stopsDict[route][nextStop]['lat']
+    stopLongitude = ri.stopsDict[route][nextStop]['lng']
     finalLatitude = abs(latitude - stopLatitude)
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
