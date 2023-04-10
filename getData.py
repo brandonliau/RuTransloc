@@ -34,6 +34,6 @@ def getWeatherData(latitude, longitude):
 def getDistance(route, nextStop, latitude, longitude):
     stopLatitude = bs.stopsDict[route][nextStop]['lat']
     stopLongitude = bs.stopsDict[route][nextStop]['lng']
-    finalLatitude = abs(abs(latitude) - abs(stopLatitude))
-    finalLongitude = abs(abs(longitude) - abs(stopLongitude))
+    finalLatitude = abs(latitude - stopLatitude)
+    finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]

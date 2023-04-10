@@ -9,7 +9,7 @@ for route in con.routeLst:
         with open(f'{route}.csv', 'w', encoding='UTF8') as file:
             writer = csv.writer(file)
     if os.stat(f'{route}.csv').st_size == 0:
-        header = ['Time', 'Speed', 'Vehicle_id', 'Passenger_load', 'Next_stop, ''Latitude', 'Longitude', 'Heading', 'Temperature', 'Windspeed', 'Precipitation', 'Humidity', 'Visibility']
+        header = ['Time', 'Speed', 'Vehicle_id', 'Passenger_load', 'Next_stop, ''Latitude', 'Longitude', 'Heading', 'Temperature', 'Windspeed', 'Precipitation', 'Humidity', 'Visibility', 'Separation_distance']
         with open(f'{route}.csv', 'w', encoding='UTF8') as file:
             writer = csv.writer(file)
             writer.writerow(header)
