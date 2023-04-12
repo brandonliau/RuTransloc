@@ -29,4 +29,7 @@ while True:
             with open(f'{route}.csv', 'a', encoding='UTF8') as file:
                 writer = csv.writer(file)
                 writer.writerow(rowData)
-    tm.sleep(10.0 - (tm.time() - starttime))
+    if os.path.isfile('stop'):
+        break
+    if 10.0 - (tm.time() - starttime) >= 0:
+        tm.sleep(10.0 - (tm.time() - starttime))
