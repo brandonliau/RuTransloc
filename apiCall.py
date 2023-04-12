@@ -36,5 +36,6 @@ def weatherAPI(latitude, longitude):
 	return(response.json())
 
 def trafficAPI(latitude, longitude):
-	response = requests.get(f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={con.trafficAPIKey1}&point={latitude},{longitude}")
+	trafficAPIKey = next(con.trafficAPIKeys)
+	response = requests.get(f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={trafficAPIKey}&point={latitude},{longitude}")
 	return(response.json())
