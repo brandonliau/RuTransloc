@@ -36,8 +36,9 @@ def getWeatherData(latitude, longitude):
     return [temperature, windspeed, precipitation, humidity, visibility]
     
 def getDistance(route, nextStop, latitude, longitude):
-    stopLatitude = ri.weekdayStops[route][nextStop]['lat']
-    stopLongitude = ri.weekdayStops[route][nextStop]['lng']
+    stopLst = ri.weekendStops
+    stopLatitude = stopLst[route][nextStop]['lat']
+    stopLongitude = stopLst[route][nextStop]['lng']
     finalLatitude = abs(latitude - stopLatitude)
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]

@@ -4,7 +4,8 @@ import time as tm
 import csv
 import os
 
-for route in ri.weekdayLst:
+routeLst = ri.weekendLst
+for route in routeLst:
     if os.path.isfile(f'{route}.csv') == False:
         with open(f'{route}.csv', 'w', encoding='UTF8') as file:
             writer = csv.writer(file)
@@ -16,7 +17,7 @@ for route in ri.weekdayLst:
 
 while True:
     starttime = tm.time()
-    for route in ri.weekdayLst:
+    for route in routeLst:
         vehicleLst = gd.getVehicleData(route)
         for vehicleData in vehicleLst:
             nextStop = vehicleData[4]
