@@ -36,8 +36,8 @@ def getWeatherData(latitude, longitude):
     return [temperature, windspeed, precipitation, humidity, visibility]
     
 def getDistance(route, nextStop, latitude, longitude):
-    stopLatitude = ri.stopsDict[route][nextStop]['lat']
-    stopLongitude = ri.stopsDict[route][nextStop]['lng']
+    stopLatitude = ri.weekdayStops[route][nextStop]['lat']
+    stopLongitude = ri.weekdayStops[route][nextStop]['lng']
     finalLatitude = abs(latitude - stopLatitude)
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
@@ -46,3 +46,14 @@ def getTrafficData(latitude, longitude):
     response = api.trafficAPI(latitude, longitude)
     trafficSpeed = response['flowSegmentData']['currentSpeed']
     return [trafficSpeed]
+
+def getStops(route_id):
+    routeDict, tempDict = {}, {}
+    response = api.stopsAPI()
+    for stop in response['data']:
+        if route_id in stop['routes']:
+            latitude = stop['location']['lat']
+            longitude = stop['location']['lng']
+            tempDict[int(stop['stop_id'])] = {'lat': latitude, 'lng': longitude}
+    routeDict[int(route_id)] = tempDict
+    return routeDict
