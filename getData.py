@@ -1,6 +1,5 @@
 import config as con
 import apiCall as api
-import routeInfo as ri
 from datetime import datetime
 
 def getVehicleData(route):
@@ -36,8 +35,8 @@ def getWeatherData(latitude, longitude):
     return [temperature, windspeed, precipitation, humidity, visibility]
     
 def getDistance(route, nextStop, latitude, longitude):
-    stopLatitude = ri.weekdayStops[route][nextStop]['lat']
-    stopLongitude = ri.weekdayStops[route][nextStop]['lng']
+    stopLatitude = con.routeDict[route][nextStop]['lat']
+    stopLongitude = con.routeDict[route][nextStop]['lng']
     finalLatitude = abs(latitude - stopLatitude)
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
@@ -47,7 +46,7 @@ def getTrafficData(latitude, longitude):
     trafficSpeed = response['flowSegmentData']['currentSpeed']
     return [trafficSpeed]
 
-def getStops(route_id):
+def getStops(route_id): # Used for debugging purposes
     routeDict, tempDict = {}, {}
     response = api.stopsAPI()
     for stop in response['data']:
