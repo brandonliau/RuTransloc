@@ -1,6 +1,7 @@
 import config as con
 import getData as gd
 import time as tm
+import traceback
 import requests
 import json
 import csv
@@ -38,10 +39,19 @@ while True:
             tm.sleep(10.0 - (tm.time() - starttime))
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
+        traceback.print_exc()
+        if 5.0 - (tm.time() - starttime) >= 0:
+            tm.sleep(5.0 - (tm.time() - starttime))
         continue
     except (json.JSONDecodeError, KeyError) as e:
         print(f"Error decoding JSON: {e}")
+        traceback.print_exc()
+        if 5.0 - (tm.time() - starttime) >= 0:
+            tm.sleep(10.0 - (tm.time() - starttime))
         continue
     except Exception as e:
-        print(f"Unknown error: {e}") 
+        print(f"Unknown error: {e}")
+        traceback.print_exc()
+        if 5.0 - (tm.time() - starttime) >= 0:
+            tm.sleep(10.0 - (tm.time() - starttime))
         continue
