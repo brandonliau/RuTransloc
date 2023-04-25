@@ -14,7 +14,7 @@ def vehicleAPI(route):
 
 def weatherAPI(latitude, longitude):
 	response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation,visibility,windspeed_10m&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&forecast_days=1")
-	print(f'status_code: {response.status_code}, {time.strftime("%H:%M:%S", time.localtime())}')
+	print(f'status_code: {response.status_code}, {time.strftime("%H:%M:%S", time.localtime())}') # Used for debugging purposes
 	return(response.json())
 
 def trafficAPI(latitude, longitude):
