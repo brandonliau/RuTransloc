@@ -3,13 +3,23 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 
-def convertTime(input): # Converts time to EST
+def convertTime(input: pd.DataFrame) -> pd.DataFrame:
+    """
+    :param: input
+    :return: Pandas dataframe with converted times
+    :usage: Converts times in time column to EST
+	"""
     df = input.copy()
     df['Time'] = pd.to_datetime(df['Time'])
     df['Time'] = df['Time'].dt.tz_convert('US/Eastern')
     return df
 
-def encodeTime(input, days): # Encodes day using angluar distance and parses hour, minute, and second
+def encodeTime(input: pd.DataFrame, days: int) -> pd.DataFrame: # Encodes day using angluar distance and parses hour, minute, and second
+    """
+    :param: input, days (number of days in a week a route is active)
+    :return: Pandas dataframe with parsed data
+    :usage: Encodes day using angluar distance and parses hour, minute, and second
+	"""
     df = input.copy()
     df.insert(0, 'Day_sin', np.sin(2 * np.pi * df['Time'].dt.dayofweek / days))
     df.insert(1, 'Day_cos', np.cos(2 * np.pi * df['Time'].dt.dayofweek / days))
@@ -19,7 +29,12 @@ def encodeTime(input, days): # Encodes day using angluar distance and parses hou
     df = df.drop('Time', axis=1)
     return df
 
-def calculateETA(input): # Calculates and adds ETA column to dataframe
+def calculateETA(input: pd.DataFrame) -> pd.DataFrame: # Calculates and adds ETA column to dataframe
+    """
+    :param: input
+    :return: Pandas dataframe with ETA data
+    :usage: Calculates ETA and filters outliers
+	"""
     df = input.copy()
     df['Which_stop'], df['ETA'] = 0, 0
     tempDict = {} # {v1ID: [Next_stop, Time, count], v2ID: [Next_stop, Time, count], ...}

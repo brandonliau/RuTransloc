@@ -3,7 +3,12 @@ import apiCall as api
 from datetime import datetime
 from pprint import pprint
 
-def getVehicleData(route):
+def getVehicleData(route: str) -> list:
+    """
+    :param: route
+    :return: Relevant data for each vehicle on the given route
+    :usage: Processes raw vehicle data
+	"""
     response = api.vehicleAPI(route)
     data = response['data'][f'{con.agencyID}']
     vehicleData = []
@@ -22,7 +27,12 @@ def getVehicleData(route):
             vehicleData.append([time, int(vehicleId), speed, passengerLoad, int(nextStop), latitude, longitude, heading])
     return vehicleData
 
-def getWeatherData(latitude, longitude):
+def getWeatherData(latitude: float, longitude: float) -> list:
+    """
+    :param: latitude, longitude
+    :return: Relevant weather data for the given coordinates
+    :usage: Processes raw weater data
+	"""
     response = api.weatherAPI(latitude, longitude)
     temperature = response['current_weather']['temperature']
     windspeed = response['current_weather']['windspeed']
@@ -35,7 +45,12 @@ def getWeatherData(latitude, longitude):
     visibility = response['hourly']['visibility'][index]
     return [temperature, windspeed, precipitation, humidity, visibility]
     
-def getDistance(route, nextStop, latitude, longitude):
+def getDistance(route: str, nextStop: str, latitude: float, longitude: float) -> list:
+    """
+    :param: route, nextStop, latitude, longitude
+    :return: Calculates distnace to the next stop
+    :usage: Uses the Pythagorean theorem to calculate distance
+	"""
     stopLatitude = con.routeDict[route][nextStop]['lat']
     stopLongitude = con.routeDict[route][nextStop]['lng']
     finalLatitude = abs(latitude - stopLatitude)
@@ -47,13 +62,18 @@ def getTrafficData(latitude, longitude):
     trafficSpeed = response['flowSegmentData']['currentSpeed']
     return [trafficSpeed]
 
-def getStops(route_id: str): # Used for debugging purposes
+def getStops(agencyID: str, route: str) -> dict:
+    """
+    :param: agencyID, routeID
+    :return: All stops for the given agency
+    :usage: Processes raw stop data
+	"""
     routeDict, tempDict = {}, {}
-    response = api.stopsAPI()
+    response = api.stopsAPI(agencyID)
     for stop in response['data']:
-        if route_id in stop['routes']:
+        if route in stop['routes']:
             latitude = stop['location']['lat']
             longitude = stop['location']['lng']
             tempDict[int(stop['stop_id'])] = {'lat': latitude, 'lng': longitude}
-    routeDict[int(route_id)] = tempDict
+    routeDict[int(route)] = tempDict
     return routeDict
