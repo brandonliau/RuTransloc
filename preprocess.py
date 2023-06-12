@@ -40,7 +40,6 @@ def calculateETA(input): # Calculates and adds ETA column to dataframe
             count = tempDict[vehicleID][2]
             tempDict[vehicleID] = [nextStop, time, count]
             df.loc[i, 'Which_stop'] = count
-
     for i in range(len(df)):
         vehicleID = int(str(df.loc[i, 'Vehicle_id']) + str(df.loc[i, 'Time'].day))
         if df.loc[i, 'Which_stop'] == len(timeAtStop[vehicleID]):

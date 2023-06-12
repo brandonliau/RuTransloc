@@ -1,6 +1,7 @@
 import config as con
 import apiCall as api
 from datetime import datetime
+from pprint import pprint
 
 def getVehicleData(route):
     response = api.vehicleAPI(route)
@@ -46,7 +47,7 @@ def getTrafficData(latitude, longitude):
     trafficSpeed = response['flowSegmentData']['currentSpeed']
     return [trafficSpeed]
 
-def getStops(route_id): # Used for debugging purposes
+def getStops(route_id: str): # Used for debugging purposes
     routeDict, tempDict = {}, {}
     response = api.stopsAPI()
     for stop in response['data']:
