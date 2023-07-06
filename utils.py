@@ -35,7 +35,6 @@ def trafficAPI(latitude: float, longitude: float) -> dict:
 	"""
 	trafficAPIKey = next(con.trafficAPIKeys)
 	while True:
-		print(trafficAPIKey)
 		response = requests.get(f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={trafficAPIKey}&point={latitude},{longitude}")
 		if response.status_code == 200:
 			return(response.json())

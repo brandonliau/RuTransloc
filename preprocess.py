@@ -13,7 +13,7 @@ def convertTime(input: pd.DataFrame) -> pd.DataFrame:
     df['Time'] = df['Time'].dt.tz_convert('US/Eastern')
     return df
 
-def encodeTime(input: pd.DataFrame, days: int) -> pd.DataFrame: # Encodes day using angluar distance and parses hour, minute, and second
+def encodeTime(input: pd.DataFrame, days: int) -> pd.DataFrame:
     """
     :param: input, days (number of days in a week a route is active)
     :return: Pandas dataframe with parsed data
@@ -28,7 +28,7 @@ def encodeTime(input: pd.DataFrame, days: int) -> pd.DataFrame: # Encodes day us
     df = df.drop('Time', axis=1)
     return df
 
-def calculateETA(input: pd.DataFrame) -> pd.DataFrame: # Calculates and adds ETA column to dataframe
+def calculateETA(input: pd.DataFrame) -> pd.DataFrame:
     """
     :param: input
     :return: Pandas dataframe with ETA data
