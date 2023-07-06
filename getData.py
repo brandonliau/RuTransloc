@@ -1,5 +1,5 @@
 import config as con
-import apiCall as api
+import utils as util
 from datetime import datetime
 from pprint import pprint
 
@@ -9,7 +9,7 @@ def getVehicleData(route: str) -> list:
     :return: Relevant data for each vehicle on the given route
     :usage: Processes raw vehicle data
 	"""
-    response = api.vehicleAPI(route)
+    response = util.vehicleAPI(route)
     data = response['data'][f'{con.agencyID}']
     vehicleData = []
     for item in data:
@@ -33,7 +33,7 @@ def getWeatherData(latitude: float, longitude: float) -> list:
     :return: Relevant weather data for the given coordinates
     :usage: Processes raw weater data
 	"""
-    response = api.weatherAPI(latitude, longitude)
+    response = util.weatherAPI(latitude, longitude)
     temperature = response['current_weather']['temperature']
     windspeed = response['current_weather']['windspeed']
     currentTime = datetime.utcnow().isoformat(timespec='hours')
@@ -57,8 +57,8 @@ def getDistance(route: str, nextStop: str, latitude: float, longitude: float) ->
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
 
-def getTrafficData(latitude, longitude):
-    response = api.trafficAPI(latitude, longitude)
+def getTrafficData(latitude: float, longitude: float) -> list:
+    response = util.trafficAPI(latitude, longitude)
     trafficSpeed = response['flowSegmentData']['currentSpeed']
     return [trafficSpeed]
 
@@ -69,7 +69,7 @@ def getStops(agencyID: str, route: str) -> dict:
     :usage: Processes raw stop data
 	"""
     routeDict, tempDict = {}, {}
-    response = api.stopsAPI(agencyID)
+    response = util.stopsAPI(agencyID)
     for stop in response['data']:
         if route in stop['routes']:
             latitude = stop['location']['lat']
