@@ -1,7 +1,8 @@
+import sys, os
+sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/configuration')
 import config as con
 import utils as util
 from datetime import datetime
-from pprint import pprint
 
 def getVehicleData(route: str) -> list:
     """
@@ -15,7 +16,7 @@ def getVehicleData(route: str) -> list:
     for item in data:
         time = item['last_updated_on']
         speed = item['speed']
-        vehicleId = item['vehicle_id']
+        callName = item['call_name']
         passengerLoad = item['passenger_load']
         latitude = item['location']['lat']
         longitude = item['location']['lng']
@@ -24,7 +25,7 @@ def getVehicleData(route: str) -> list:
             pass
         else:
             nextStop = item['arrival_estimates'][0]['stop_id']
-            vehicleData.append([time, int(vehicleId), speed, passengerLoad, int(nextStop), latitude, longitude, heading])
+            vehicleData.append([time, int(callName), speed, passengerLoad, int(nextStop), latitude, longitude, heading])
     return vehicleData
 
 def getWeatherData(latitude: float, longitude: float) -> list:
@@ -62,9 +63,21 @@ def getTrafficData(latitude: float, longitude: float) -> list:
     trafficSpeed = response['flowSegmentData']['currentSpeed']
     return [trafficSpeed]
 
-def getStops(agencyID: str, route: str) -> dict:
+def combineData(route: str) -> list:
+    vehicleLst = getVehicleData(route)
+    for vehicleData in vehicleLst:
+        nextStop = vehicleData[4]
+        latitude = vehicleData[5]
+        longitude = vehicleData[6]
+        trafficData = getTrafficData(latitude, longitude)
+        weatherData = getWeatherData(latitude, longitude)
+        distanceData = getDistance(route, nextStop, latitude, longitude)
+        allData = vehicleData + trafficData + weatherData + distanceData
+        return allData
+
+def getStops(agencyID: str, route: str, output: bool = False) -> dict:
     """
-    :param: agencyID, routeID
+    :param: agencyID, routeID, output
     :return: All stops for the given agency
     :usage: Processes raw stop data
 	"""
@@ -72,8 +85,12 @@ def getStops(agencyID: str, route: str) -> dict:
     response = util.stopsAPI(agencyID)
     for stop in response['data']:
         if route in stop['routes']:
+            stopID = int(stop['stop_id'])
+            name = stop['name']
             latitude = stop['location']['lat']
             longitude = stop['location']['lng']
-            tempDict[int(stop['stop_id'])] = {'lat': latitude, 'lng': longitude}
+            tempDict[stopID] = {'name': name, 'lat': latitude, 'lng': longitude}
+            if output:
+                print(f'{stopID}: {tempDict[stopID]}')
     routeDict[int(route)] = tempDict
     return routeDict

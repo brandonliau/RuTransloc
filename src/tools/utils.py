@@ -1,3 +1,5 @@
+import sys, os
+sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/configuration')
 import config as con
 import requests
 import time

@@ -1,5 +1,5 @@
+data/
+configuration/
+randomForest
 __pycache__
 .python-version
-.DS_store
-config.py
-plotData.py
