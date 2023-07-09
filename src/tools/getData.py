@@ -4,6 +4,7 @@ from datetime import datetime
 sys.path.append(os.path.abspath('../../configuration'))
 # Local imports
 import config as con
+import routeInfo as ri
 import utils as util
 
 def getVehicleData(route: str) -> list:
@@ -54,8 +55,8 @@ def getDistance(route: str, nextStop: str, latitude: float, longitude: float) ->
     :return: Calculates distnace to the next stop
     :usage: Uses the Pythagorean theorem to calculate distance
 	"""
-    stopLatitude = con.routeDict[route][nextStop]['lat']
-    stopLongitude = con.routeDict[route][nextStop]['lng']
+    stopLatitude = ri.allRoutes[route][nextStop]['lat']
+    stopLongitude = ri.allRoutes[route][nextStop]['lng']
     finalLatitude = abs(latitude - stopLatitude)
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
@@ -77,14 +78,14 @@ def combineData(route: str) -> list:
         allData = vehicleData + trafficData + weatherData + distanceData
         return allData
 
-def getStops(agencyID: str, route: str, output: bool = False) -> dict:
+def getStops(route: str, output: bool = False) -> dict:
     """
     :param: agencyID, routeID, output
     :return: All stops for the given agency
     :usage: Processes raw stop data
 	"""
     routeDict, tempDict = {}, {}
-    response = util.stopsAPI(agencyID)
+    response = util.stopsAPI(con.agencyID)
     for stop in response['data']:
         if route in stop['routes']:
             stopID = int(stop['stop_id'])
@@ -93,6 +94,6 @@ def getStops(agencyID: str, route: str, output: bool = False) -> dict:
             longitude = stop['location']['lng']
             tempDict[stopID] = {'name': name, 'lat': latitude, 'lng': longitude}
             if output:
-                print(f'{stopID}: {tempDict[stopID]}')
+                print(f'{stopID}: {tempDict[stopID]},')
     routeDict[int(route)] = tempDict
     return routeDict

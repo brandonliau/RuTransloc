@@ -24,15 +24,6 @@ while True:
         starttime = tm.time()
         for route in con.routeLst:
             rowData = gd.combineData(route)
-            # vehicleLst = gd.getVehicleData(route)
-            # for vehicleData in vehicleLst:
-            #     nextStop = vehicleData[4]
-            #     latitude = vehicleData[5]
-            #     longitude = vehicleData[6]
-            #     trafficData = gd.getTrafficData(latitude, longitude)
-            #     weatherData = gd.getWeatherData(latitude, longitude)
-            #     distanceData = gd.getDistance(route, nextStop, latitude, longitude)
-            #     rowData = vehicleData + trafficData + weatherData + distanceData
             with open(f'{route}.csv', 'a', encoding='UTF8') as file:
                 writer = csv.writer(file)
                 writer.writerow(rowData)
