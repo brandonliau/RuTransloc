@@ -1,8 +1,10 @@
+# Standard library imports
 import sys, os
-sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/configuration')
+from datetime import datetime
+sys.path.append(os.path.abspath('../../configuration'))
+# Local imports
 import config as con
 import utils as util
-from datetime import datetime
 
 def getVehicleData(route: str) -> list:
     """

@@ -1,3 +1,4 @@
+# Third party imports
 from collections import defaultdict
 import pandas as pd
 import numpy as np
@@ -39,7 +40,7 @@ def calculateETA(input: pd.DataFrame) -> pd.DataFrame:
     tempDict = {} # {v1ID: [Next_stop, Time, count], v2ID: [Next_stop, Time, count], ...}
     timeAtStop = defaultdict(list) # {v1ID: [arrival1, arrival2, arrival3], V2ID: [arrival1, arrival2, arrival3], ...}
     for i in range(len(df)):
-        vehicleID = int(str(df.loc[i, 'Call_Name']) + str(df.loc[i, 'Time'].day))
+        vehicleID = int(str(df.loc[i, 'Call_name']) + str(df.loc[i, 'Time'].day))
         nextStop = df.loc[i, 'Next_stop']
         time = df.loc[i, 'Time']
         if vehicleID not in tempDict:
@@ -55,13 +56,13 @@ def calculateETA(input: pd.DataFrame) -> pd.DataFrame:
             tempDict[vehicleID] = [nextStop, time, count]
             df.loc[i, 'Which_stop'] = count
     for i in range(len(df)):
-        vehicleID = int(str(df.loc[i, 'Vehicle_id']) + str(df.loc[i, 'Time'].day))
+        vehicleID = int(str(df.loc[i, 'Call_name']) + str(df.loc[i, 'Time'].day))
         if df.loc[i, 'Which_stop'] == len(timeAtStop[vehicleID]):
             df = df.drop(i)
     df = df.reset_index(drop=True)
     for i in range(len(df)):
         index = df.loc[i, 'Which_stop']
-        vehicleID = int(str(df.loc[i, 'Vehicle_id']) + str(df.loc[i, 'Time'].day))
+        vehicleID = int(str(df.loc[i, 'Call_name']) + str(df.loc[i, 'Time'].day))
         stopTime = timeAtStop[vehicleID][index]
         currentTime = df.loc[i, 'Time']
         timeDifference = (stopTime - currentTime).total_seconds()

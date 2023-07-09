@@ -1,6 +1,8 @@
+# Standard library imports
 import sys, os
-sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/configuration')
-sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/src/tools')
+sys.path.append(os.path.abspath('../../configuration'))
+sys.path.append(os.path.abspath('../tools'))
+# Local imports
 import routeInfo as ri
 import getData as gd
 

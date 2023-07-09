@@ -1,12 +1,13 @@
-import sys, os
-sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/configuration')
-sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/src/tools')
+# Standard library imports
+import sys, os, traceback
+import time as tm
+sys.path.append(os.path.abspath('../../configuration'))
+sys.path.append(os.path.abspath('../tools'))
+# Third party imports
+import requests, json, csv
+# Local imports
 import config as con
 import getData as gd
-import time as tm
-import traceback
-import requests
-import json, csv
 
 for route in con.routeLst:
     if os.path.isfile(f'{route}.csv') == False:

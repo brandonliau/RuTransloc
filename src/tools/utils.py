@@ -1,8 +1,10 @@
-import sys, os
-sys.path.insert(0, '/Users/bliau/Documents/VS Code/Python/RuTransloc/configuration')
-import config as con
+# Standard library imports
+import sys, os, time
+sys.path.append(os.path.abspath('../../configuration'))
+# Third party imports
 import requests
-import time
+# Local imports
+import config as con
 
 def vehicleAPI(route: str) -> dict:
 	"""
