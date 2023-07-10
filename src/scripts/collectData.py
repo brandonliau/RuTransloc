@@ -10,7 +10,7 @@ import config as con
 import routeInfo as ri
 import getData as gd
 
-for route in ri.chosenRoutes:
+for route in con.chooseRoutes:
     if os.path.isfile(f'{route}.csv') == False:
         with open(f'{route}.csv', 'w', encoding='UTF8') as file:
             writer = csv.writer(file)
@@ -33,7 +33,7 @@ while True:
                 weatherData = gd.getWeatherData(latitude, longitude)
                 distanceData = gd.getDistance(route, nextStop, latitude, longitude)
                 rowData = vehicleData + trafficData + weatherData + distanceData
-                with open(f'{route}.csv', 'a', encoding='UTF8') as file:
+                with open(f'{ri.allRoutes[route]}.csv', 'a', encoding='UTF8') as file:
                     writer = csv.writer(file)
                     writer.writerow(rowData)
         if os.path.isfile('stop'):
