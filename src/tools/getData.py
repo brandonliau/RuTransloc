@@ -1,7 +1,6 @@
 # Standard library imports
 import sys, os
 from datetime import datetime
-from pprint import pprint
 sys.path.append(os.path.abspath('../../configuration'))
 # Local imports
 import config as con

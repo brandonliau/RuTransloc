@@ -19,6 +19,9 @@ def applyModel(input: list) -> int:
     return int(prediction[0])
 
 def generatePrediction(routes: list = None) -> dict:
+    """
+    Return schema: {routeID: {busID: [prediction, nextStop], busID: [prediction, nextStop]}, routeID: {busID: [prediction, nextStop], busID: [prediction, nextStop]}}
+    """
     predictions = {}
     if not routes:
         routes = ri.chosenRoutes
@@ -32,38 +35,58 @@ def generatePrediction(routes: list = None) -> dict:
             trafficData = gd.getTrafficData(latitude, longitude)
             weatherData = gd.getWeatherData(latitude, longitude)
             distanceData = gd.getDistance(route, nextStop, latitude, longitude)
-            rawData = vehicleData + trafficData + weatherData + distanceData
-            processedData = [pre.processData(rawData)]
+            raw = vehicleData + trafficData + weatherData + distanceData
+            processedData = [pre.processData(raw)]
             busPredictions[vehicleData[1]] = [applyModel(processedData), ri.routeMap[route][nextStop]['name']]
-        predictions[route] = busPredictions
+        predictions[ri.allRoutes[route]] = busPredictions
     return predictions
-# return data schema: {routeID: {busID: [eta, nextStop], busID: [eta, nextStop]}, routeID: {busID: [eta, nextStop]}}
 
-pprint(generatePrediction())
+def returnRaw(routes: list = None) -> dict:
+    """
+    Return schema: {routeID: {busID: [data], busID: [data]}, routeID: {busID: [data], {busID: [data]}}}
+    data = ['Time', 'Call_name', 'Speed', 'Passenger_load', 'Next_stop', 'Latitude', 'Longitude', 'Heading', 'Traffic_speed', 'Temperature', 'Windspeed', 'Precipitation', 'Humidity', 'Visibility', 'Stop_distance']
+    """
+    rawData = {}
+    if not routes:
+        routes = ri.chosenRoutes
+    for route in routes:
+        temp = {}
+        vehicles = gd.getVehicleData(route)
+        for vehicleData in vehicles:
+            nextStop = vehicleData[4]
+            latitude = vehicleData[5]
+            longitude = vehicleData[6]
+            trafficData = gd.getTrafficData(latitude, longitude)
+            weatherData = gd.getWeatherData(latitude, longitude)
+            distanceData = gd.getDistance(route, nextStop, latitude, longitude)
+            raw = vehicleData + trafficData + weatherData + distanceData
+            temp[vehicleData[1]] = raw
+        rawData[ri.allRoutes[route]] = temp
+    return rawData
 
-# app = FastAPI()
-# @app.get('/predict')
-# async def Predict():
-#     return
+app = FastAPI()
+@app.get('/')
+async def status():
+    return {'Status': 'Operational', 'Version': 'v1'}
 
-# @app.get('/predict/{route}')
-# async def routePredict(route: str | int):
-#     if route in ri.routeMap():
-#         return 
+@app.get('/predict')
+async def Predict():
+    return generatePrediction()
+
+@app.get('/predict/{routes}')
+async def routePredict(routes: str | int):
+    return generatePrediction(routes)
     
-# @app.get('/raw')
-# async def raw(raw):
-#     return 
+@app.get('/raw')
+async def raw(raw):
+    return 
 
-# @app.get('/raw/{route}')
-# async def busRaw(route: str | int):
-#     return
-
-# @app.get('/health')
-# async def health():
-#     return
+@app.get('/raw/{route}')
+async def busRaw(route: str | int):
+    return
     
-# @app.get('/predict/{bus}')
+## To be implemented ##
+# @app.get('/predict/{bus}') 
 # async def busPredict(bus: int):
 #     return
 
