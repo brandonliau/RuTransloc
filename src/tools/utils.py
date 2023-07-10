@@ -28,7 +28,7 @@ def weatherAPI(latitude: float, longitude: float) -> dict:
     :usage: Provides raw weather
 	"""
 	response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation,visibility,windspeed_10m&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&forecast_days=1")
-	print(f'weather_status: {response.status_code}, {time.strftime("%b %d %H:%M:%S", time.localtime())}') # Used for debugging purposes
+	# print(f'weather_status: {response.status_code}, {time.strftime("%b %d %H:%M:%S", time.localtime())}') # Used for debugging purposes
 	return(response.json())
 
 def trafficAPI(latitude: float, longitude: float) -> dict:
@@ -41,7 +41,7 @@ def trafficAPI(latitude: float, longitude: float) -> dict:
 	while True:
 		response = requests.get(f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={trafficAPIKey}&point={latitude},{longitude}")
 		if response.status_code == 200:
-			print(f'traffic_status: {response.status_code}, {time.strftime("%b %d %H:%M:%S", time.localtime())}') # Used for debugging purposes
+			# print(f'traffic_status: {response.status_code}, {time.strftime("%b %d %H:%M:%S", time.localtime())}') # Used for debugging purposes
 			return(response.json())
 		else:
 			trafficAPIKey = next(con.trafficAPIKeys)

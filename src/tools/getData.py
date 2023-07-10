@@ -1,6 +1,7 @@
 # Standard library imports
 import sys, os
 from datetime import datetime
+from pprint import pprint
 sys.path.append(os.path.abspath('../../configuration'))
 # Local imports
 import config as con
@@ -55,8 +56,8 @@ def getDistance(route: str, nextStop: str, latitude: float, longitude: float) ->
     :return: Calculates distance to the next stop
     :usage: Uses the Pythagorean theorem to calculate distance
 	"""
-    stopLatitude = ri.allRoutes[route][nextStop]['lat']
-    stopLongitude = ri.allRoutes[route][nextStop]['lng']
+    stopLatitude = ri.routeMap[route][nextStop]['lat']
+    stopLongitude = ri.routeMap[route][nextStop]['lng']
     finalLatitude = abs(latitude - stopLatitude)
     finalLongitude = abs(longitude - stopLongitude)
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
@@ -73,7 +74,7 @@ def getTrafficData(latitude: float, longitude: float) -> list:
 
 def getStops(route: str, output: bool = False) -> dict:
     """
-    :param: agencyID, routeID, output
+    :param: route, output (whether to print output)
     :return: All stops for the given agency
     :usage: Processes raw stop data
 	"""

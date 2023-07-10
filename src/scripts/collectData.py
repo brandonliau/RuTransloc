@@ -24,8 +24,8 @@ while True:
     try:
         starttime = tm.time()
         for route in ri.chosenRoutes:
-            vehicleLst = gd.getVehicleData(route)
-            for vehicleData in vehicleLst:
+            vehicles = gd.getVehicleData(route)
+            for vehicleData in vehicles:
                 nextStop = vehicleData[4]
                 latitude = vehicleData[5]
                 longitude = vehicleData[6]

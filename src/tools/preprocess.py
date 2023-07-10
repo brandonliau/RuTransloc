@@ -11,7 +11,15 @@ def convertTime(input: pd.DataFrame) -> pd.DataFrame:
 	"""
     df = input.copy()
     df['Time'] = pd.to_datetime(df['Time'])
-    df['Time'] = df['Time'].dt.tz_convert('US/Eastern')
+    # df['Time'] = df['Time'].dt.tz_convert('US/Eastern')
+    return df
+
+def splitTime(input: pd.DataFrame,) -> pd.DataFrame:
+    df = input.copy()
+    df.insert(0, 'Hour', df['Time'].dt.hour)
+    df.insert(1, 'Minute', df['Time'].dt.minute)
+    df.insert(2, 'Second', df['Time'].dt.second)
+    df = df.drop('Time', axis=1)
     return df
 
 def encodeTime(input: pd.DataFrame, days: int) -> pd.DataFrame:
@@ -78,3 +86,12 @@ def filterETA(input, limit): # Filters outliers from ETA
             df = df.drop(i)
     df = df.reset_index(drop=True)
     return df
+
+def processData(input: list) -> list:
+    del input[7]
+    input[0] = pd.to_datetime(input[0])
+    input.insert(1, input[0].hour)
+    input.insert(2, input[0].minute)
+    input.insert(3, input[0].second)
+    del input[0]
+    return input
