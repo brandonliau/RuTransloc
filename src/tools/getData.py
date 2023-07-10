@@ -35,7 +35,7 @@ def getWeatherData(latitude: float, longitude: float) -> list:
     """
     :param: latitude, longitude
     :return: Relevant weather data for the given coordinates
-    :usage: Processes raw weater data
+    :usage: Processes raw weather data
 	"""
     response = util.weatherAPI(latitude, longitude)
     temperature = response['current_weather']['temperature']
@@ -52,7 +52,7 @@ def getWeatherData(latitude: float, longitude: float) -> list:
 def getDistance(route: str, nextStop: str, latitude: float, longitude: float) -> list:
     """
     :param: route, nextStop, latitude, longitude
-    :return: Calculates distnace to the next stop
+    :return: Calculates distance to the next stop
     :usage: Uses the Pythagorean theorem to calculate distance
 	"""
     stopLatitude = ri.allRoutes[route][nextStop]['lat']
@@ -62,21 +62,14 @@ def getDistance(route: str, nextStop: str, latitude: float, longitude: float) ->
     return [((finalLatitude**2) + (finalLongitude**2))**(1/2)]
 
 def getTrafficData(latitude: float, longitude: float) -> list:
+    """
+    :param: latitude, longitude
+    :return: Relevant traffic data for the given coordinates
+    :usage: Processes raw traffic data
+	"""
     response = util.trafficAPI(latitude, longitude)
     trafficSpeed = response['flowSegmentData']['currentSpeed']
     return [trafficSpeed]
-
-def combineData(route: str) -> list:
-    vehicleLst = getVehicleData(route)
-    for vehicleData in vehicleLst:
-        nextStop = vehicleData[4]
-        latitude = vehicleData[5]
-        longitude = vehicleData[6]
-        trafficData = getTrafficData(latitude, longitude)
-        weatherData = getWeatherData(latitude, longitude)
-        distanceData = getDistance(route, nextStop, latitude, longitude)
-        allData = vehicleData + trafficData + weatherData + distanceData
-        return allData
 
 def getStops(route: str, output: bool = False) -> dict:
     """

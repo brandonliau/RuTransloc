@@ -7,9 +7,10 @@ sys.path.append(os.path.abspath('../tools'))
 import requests, json, csv
 # Local imports
 import config as con
+import routeInfo as ri
 import getData as gd
 
-for route in con.routeLst:
+for route in ri.chosenRoutes:
     if os.path.isfile(f'{route}.csv') == False:
         with open(f'{route}.csv', 'w', encoding='UTF8') as file:
             writer = csv.writer(file)
@@ -22,11 +23,19 @@ for route in con.routeLst:
 while True:
     try:
         starttime = tm.time()
-        for route in con.routeLst:
-            rowData = gd.combineData(route)
-            with open(f'{route}.csv', 'a', encoding='UTF8') as file:
-                writer = csv.writer(file)
-                writer.writerow(rowData)
+        for route in ri.chosenRoutes:
+            vehicleLst = gd.getVehicleData(route)
+            for vehicleData in vehicleLst:
+                nextStop = vehicleData[4]
+                latitude = vehicleData[5]
+                longitude = vehicleData[6]
+                trafficData = gd.getTrafficData(latitude, longitude)
+                weatherData = gd.getWeatherData(latitude, longitude)
+                distanceData = gd.getDistance(route, nextStop, latitude, longitude)
+                rowData = vehicleData + trafficData + weatherData + distanceData
+                with open(f'{route}.csv', 'a', encoding='UTF8') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(rowData)
         if os.path.isfile('stop'):
             break
         if 10.0 - (tm.time() - starttime) >= 0:
