@@ -78,13 +78,13 @@ async def routePredict(routes: str | int):
     return generatePrediction(routes)
     
 @app.get('/raw')
-async def raw(raw):
-    return 
+async def raw():
+    return returnRaw()
 
-@app.get('/raw/{route}')
-async def busRaw(route: str | int):
-    return
-    
+@app.get('/raw/{routes}')
+async def routeRaw(routes: str | int):
+    return returnRaw(routes)
+
 ## To be implemented ##
 # @app.get('/predict/{bus}') 
 # async def busPredict(bus: int):
