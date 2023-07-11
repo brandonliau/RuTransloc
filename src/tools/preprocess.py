@@ -79,7 +79,12 @@ def calculateETA(input: pd.DataFrame) -> pd.DataFrame:
     df.to_csv('output.csv', encoding='utf-8', index=False)
     return df
 
-def filterETA(input, limit): # Filters outliers from ETA
+def filterETA(input: pd.DataFrame, limit): # Filters outliers from ETA
+    """
+    :param: input, limit (upper bound for ETA)
+    :return: Pandas dataframe with filtered ETA data
+    :usage: Filters outliers from ETA column
+	"""
     df = input.copy()
     for i in range(len(df)):
         if df.loc[i, 'ETA'] > limit:
@@ -88,6 +93,11 @@ def filterETA(input, limit): # Filters outliers from ETA
     return df
 
 def processData(input: list) -> list:
+    """
+    :param: input (one row of data represented with a list)
+    :return: List of processed data
+    :usage: Processes data to match ml model input schema
+	"""
     del input[7]
     input[0] = pd.to_datetime(input[0])
     input.insert(1, input[0].hour)

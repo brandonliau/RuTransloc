@@ -1,25 +1,30 @@
 # Standard library imports
 import sys, os
-from typing import Annotated
 sys.path.append(os.path.abspath('configuration'))
 sys.path.append(os.path.abspath('src/tools'))
 # Third party imports
-from fastapi import FastAPI, Query, Depends
-import pandas as pd
+from fastapi import FastAPI
 import pickle
 # Local imports
-import config as con
 import routeInfo as ri
 import preprocess as pre
 import getData as gd
 
-def applyModel(input: list, route: str, model: str) -> int:
+def applyModel(data: list, route: str, model: str) -> int:
+    """
+    :param: data, route, model (ml)
+    :return: Predicted ETA for specific vehicle
+    :usage: Generate a prediction from the chosen ml model
+	"""
     model = pickle.load(open(f'src/models/{route}/{model}', 'rb'))
-    prediction = model.predict(input)
+    prediction = model.predict(data)
     return int(prediction[0])
 
 def generatePrediction(routes: list = None, model: str = None) -> dict:
     """
+    :param: routes, model (ml)
+    :return: JSON of releveant information
+    :usage: Generate and list all predictions to be returned by the api
     Return schema: {routeID: {busID: [prediction, nextStop], busID: [prediction, nextStop]}, routeID: {busID: [prediction, nextStop], busID: [prediction, nextStop]}}
     """
     predictions = {}
@@ -50,6 +55,9 @@ def generatePrediction(routes: list = None, model: str = None) -> dict:
 
 def returnRaw(routes: list = None) -> dict:
     """
+    :param: routes
+    :return: JSON of raw data used to train and generate predictions
+    :usage: Return complied data
     Return schema: {routeID: {busID: [data], busID: [data]}, routeID: {busID: [data], {busID: [data]}}}
     data = ['Time', 'Call_name', 'Speed', 'Passenger_load', 'Next_stop', 'Latitude', 'Longitude', 'Heading', 'Traffic_speed', 'Temperature', 'Windspeed', 'Precipitation', 'Humidity', 'Visibility', 'Stop_distance']
     """
@@ -78,10 +86,6 @@ def returnRaw(routes: list = None) -> dict:
         rawData[ri.allRoutes[route]] = temp
     return rawData
 
-def parseQuery(input: str) -> list:
-    return input.split(',')
-
-
 app = FastAPI()
 @app.get('/')
 async def status():
@@ -93,8 +97,7 @@ async def predict(model: str = 'RandomForest'):
 
 @app.get('/predict/')
 async def predict(routes: str, model: str = 'RandomForest'):
-    routes = parseQuery(routes)
-    print(model)
+    routes = routes.split(',')
     return generatePrediction(routes, model)
     
 @app.get('/raw')
@@ -103,14 +106,5 @@ async def raw():
 
 @app.get('/raw/')
 async def raw(routes: str):
-    routes = parseQuery(routes)
+    routes = routes.split(',')
     return returnRaw(routes)
-
-## To be implemented ##
-# @app.get('/predict/{bus}') 
-# async def busPredict(bus: int):
-#     return
-
-# @app.get('/raw/{bus}')
-# async def busRaw(bus: int):
-#     return
