@@ -1,5 +1,5 @@
 # Standard library imports
-import sys, os, time
+import sys, os
 sys.path.append(os.path.abspath('../../configuration'))
 # Third party imports
 import requests
@@ -15,7 +15,7 @@ def vehicleAPI(route: str) -> dict:
 	url = "https://transloc-api-1-2.p.rapidapi.com/vehicles.json"
 	querystring = {"agencies":f"{con.agencyID}", "routes":f"{route}", "callback":"call"}
 	headers = {
-		"X-RapidAPI-Key": con.apiKey,
+		"X-RapidAPI-Key": con.rapidApiKey,
 		"X-RapidAPI-Host": "transloc-api-1-2.p.rapidapi.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring)
@@ -37,14 +37,33 @@ def trafficAPI(latitude: float, longitude: float) -> dict:
     :return: Traffic at given coordinates
     :usage: Provides raw traffic data
 	"""
-	trafficAPIKey = next(con.trafficAPIKeys)
+	trafficApiKey = next(con.trafficApiKeys)
 	while True:
-		response = requests.get(f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={trafficAPIKey}&point={latitude},{longitude}")
+		response = requests.get(f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={trafficApiKey}&point={latitude},{longitude}")
 		if response.status_code == 200:
 			# print(f'traffic_status: {response.status_code}, {time.strftime("%b %d %H:%M:%S", time.localtime())}') # Used for debugging purposes
 			return(response.json())
 		else:
-			trafficAPIKey = next(con.trafficAPIKeys)
+			trafficApiKey = next(con.trafficApiKeys)
+
+def agencyAPI():
+	url = "https://transloc-api-1-2.p.rapidapi.com/agencies.json"
+	headers = {
+		"X-RapidAPI-Key": con.rapidApiKey,
+		"X-RapidAPI-Host": "transloc-api-1-2.p.rapidapi.com"
+	}
+	response = requests.get(url, headers=headers)
+	return(response.json())
+
+def routesAPI():
+	url = "https://transloc-api-1-2.p.rapidapi.com/routes.json"
+	querystring = {"agencies":"1323","callback":"call"}
+	headers = {
+		"X-RapidAPI-Key": con.rapidApiKey,
+		"X-RapidAPI-Host": "transloc-api-1-2.p.rapidapi.com"
+	}
+	response = requests.get(url, headers=headers, params=querystring)
+	return(response.json())
 
 def stopsAPI(agencyID: str) -> dict:
 	"""
@@ -55,7 +74,7 @@ def stopsAPI(agencyID: str) -> dict:
 	url = "https://transloc-api-1-2.p.rapidapi.com/stops.json"
 	querystring = {"agencies":f"{agencyID}", "callback":"call"}
 	headers = {
-		"X-RapidAPI-Key": con.apiKey,
+		"X-RapidAPI-Key": con.rapidApiKey,
 		"X-RapidAPI-Host": "transloc-api-1-2.p.rapidapi.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring)
