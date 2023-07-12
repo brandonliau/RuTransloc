@@ -1,5 +1,5 @@
 # RuTransloc
-Machine learning pipeline used predict the ETA for buses at Rutgers University. This project was originally configured for Rutgers but can easily be changed to accomadate any transportation network that relies on [TransLoc](https://transloc.com/). This project also contains the code required for deployement as an API.
+Machine learning pipeline used to predict the ETA for buses at Rutgers University. This project was originally configured for Rutgers but can easily be changed to accomadate any transportation network that relies on [TransLoc](https://transloc.com/). This project also contains the code required for deployement as an API.
 
 ## Installation
 - Clone this Repository
@@ -13,18 +13,13 @@ pip install -r requirements.txt
 ```
 
 ## Configure Project
-- Create a configuration folder with the neccessary files
-```
-$ mkdir configuration
-$ cd configuration
-$ touch config.py routeInfo.py validKeys.py
-```
-- Copy format for configuration files from the example folder
+- Generate required API keys and populate corresponding variables in config.py
 - Run the configuration generator
 ```
 python src/scripts/generateConfig.py
 ```
-- Choose routes to collect data from in config.py
+- Populate all variables specificied by the configuration generator
+- Choose routes to track by adding items to the allRoutes list in config.py
 
 ## Get API Keys
 - **TransLoc PublicAPI** - https://rapidapi.com/transloc/api/openapi-1-2/

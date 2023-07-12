@@ -79,3 +79,5 @@ def stopsAPI(agencyID: str) -> dict:
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring)
 	return(response.json())
+
+print(routesAPI())

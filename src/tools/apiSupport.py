@@ -1,7 +1,6 @@
 # Standard library imports
 import sys, os
 sys.path.append(os.path.abspath('configuration'))
-# Third party imports
 import pickle
 # Local imports
 import routeInfo as ri
