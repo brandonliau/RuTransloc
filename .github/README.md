@@ -16,7 +16,8 @@ pip install -r requirements.txt
 - Generate required API keys and populate corresponding variables in config.py
 - Run the configuration generator
 ```
-python src/scripts/generateConfig.py
+cd src/scripts/
+python generateConfig.py
 ```
 - Populate all variables specificied by the configuration generator
 - Choose routes to track by adding items to the allRoutes list in config.py
@@ -28,7 +29,8 @@ python src/scripts/generateConfig.py
 ## Collecting Data
 - Run the data collection script
 ```
-python src/scripts/collectData.py
+cd src/scripts/
+python collectData.py
 ```
 
 ## Training Machine Learning Models
