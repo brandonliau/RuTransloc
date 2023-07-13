@@ -1,5 +1,5 @@
 # Standard library imports
-import sys, os
+import sys, os, time
 sys.path.append(os.path.abspath('../../configuration'))
 # Third party imports
 import requests
@@ -41,7 +41,7 @@ def trafficAPI(latitude: float, longitude: float) -> dict:
 	while True:
 		response = requests.get(f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={trafficApiKey}&point={latitude},{longitude}")
 		if response.status_code == 200:
-			# print(f'traffic_status: {response.status_code}, {time.strftime("%b %d %H:%M:%S", time.localtime())}') # Used for debugging purposes
+			# print(f'traffic_status: {response.status_code}, {time.strftime("%b %d %H:%M:%S", time.localtime())} / ', end = "") # Used for debugging purposes
 			return(response.json())
 		else:
 			trafficApiKey = next(con.trafficApiKeys)
