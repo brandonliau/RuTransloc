@@ -9,7 +9,7 @@ git clone https://github.com/brandonliau/RuTransloc.git
 - Install requirements
 ```
 cd RuTransloc
-pip install -r requirements.txt
+pip install -r .github/requirements.txt
 ```
 
 ## Configure Project

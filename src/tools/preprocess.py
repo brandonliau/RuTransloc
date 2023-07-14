@@ -76,7 +76,7 @@ def calculateETA(input: pd.DataFrame) -> pd.DataFrame:
         timeDifference = (stopTime - currentTime).total_seconds()
         df.loc[i, 'ETA'] = timeDifference
     df = df.drop('Which_stop', axis=1)
-    df.to_csv('output.csv', encoding='utf-8', index=False)
+    # df.to_csv('output.csv', encoding='utf-8', index=False)
     return df
 
 def filterETA(input: pd.DataFrame, limit): # Filters outliers from ETA

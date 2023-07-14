@@ -1,6 +1,7 @@
 # Standard library imports
 import sys, os
-sys.path.append(os.path.abspath('configuration'))
+sys.path.append(os.path.abspath('../../configuration'))
+# sys.path.append(os.path.abspath('../src/tools'))
 import pickle
 # Local imports
 import routeInfo as ri
