@@ -41,4 +41,23 @@ python collectData.py
     - Support Vector Regression
 
 ## Deployment
-🚧 In progress 🚧
+- Feel free to deploy to any service you are comfortable using
+- To deploy to Google Cloud:
+    - Install Docker: https://docs.docker.com/engine/install/
+    - Install the gcloud CLI: https://cloud.google.com/sdk/docs/install
+    - Create a new project in Google Cloud
+    - Create a repository in Google Cloud Artifact Registry
+    - Build image
+    ```
+    sudo docker build -t {image_name} .
+    ```
+    - Minify Docker image with slim (*optional*): https://github.com/slimtoolkit/slim
+    ```
+    sudo docker slim build -http-probe --include-path /app/ --preserve-path src/models/ {image_name}
+    ```
+    - Push image to Google Cloud Artifact Registry
+    ```
+    docker tag {image_name} {location}-docker.pkg.dev/{project_name}/{repo_name}/{name}
+    docker push {location}.pkg.dev/{project_name}/{repo_name}/{name}
+    ```
+    - Create service in Cloud Run with image from Artifact Registry

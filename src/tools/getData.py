@@ -49,7 +49,7 @@ def getWeatherData(latitude: float, longitude: float) -> list:
     humidity = response['hourly']['relativehumidity_2m'][index]
     visibility = response['hourly']['visibility'][index]
     return [temperature, windspeed, precipitation, humidity, visibility]
-    
+
 def getDistance(route: str, nextStop: str, latitude: float, longitude: float) -> list:
     """
     :param: route, nextStop, latitude, longitude

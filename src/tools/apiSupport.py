@@ -1,8 +1,10 @@
 # Standard library imports
 import sys, os
 sys.path.append(os.path.abspath('../../configuration'))
-# sys.path.append(os.path.abspath('../src/tools'))
 import pickle
+# Third party imports
+import sklearn
+import sklearn.ensemble
 # Local imports
 import routeInfo as ri
 import preprocess as pre
@@ -29,7 +31,8 @@ def generatePrediction(routes: list = None, model: str = None) -> dict:
     if routes:
         temp = []
         for key, value in ri.allRoutes.items():
-            if value in routes:
+            if value == routes:
+                print(key)
                 temp.append(key)
         routes = temp
         del temp

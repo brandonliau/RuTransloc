@@ -55,9 +55,9 @@ def agencyAPI():
 	response = requests.get(url, headers=headers)
 	return(response.json())
 
-def routesAPI():
+def routesAPI(agencyID: str):
 	url = "https://transloc-api-1-2.p.rapidapi.com/routes.json"
-	querystring = {"agencies":"1323","callback":"call"}
+	querystring = {"agencies":f"{agencyID}","callback":"call"}
 	headers = {
 		"X-RapidAPI-Key": con.rapidApiKey,
 		"X-RapidAPI-Host": "transloc-api-1-2.p.rapidapi.com"

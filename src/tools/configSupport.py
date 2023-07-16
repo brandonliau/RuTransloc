@@ -28,8 +28,8 @@ def getRoutes(agencyID: str, index: list = None) -> list:
     :return: List of selected routes
     :usage: Prints avaliable routes for given agency ID
 	"""
-    response = util.routesAPI()
     agencyID = str(agencyID)
+    response = util.routesAPI(agencyID)
     routeDict, routes, i = {} , [], 0
     if not index:
         for item in response['data'][agencyID]:
